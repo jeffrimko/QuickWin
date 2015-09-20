@@ -1,0 +1,65 @@
+#ifndef _MAINWINDOW_H_  // Define include guard.
+#define _MAINWINDOW_H_
+
+#include <QMainWindow>
+#include <QStandardItemModel>
+#include <QAction>
+#include <QSortFilterProxyModel>
+#include <QSystemTrayIcon>
+#include <QMenu>
+
+namespace Ui {
+class MainWindow;
+}
+
+struct WinItem {
+    uint num;
+    QString title;
+    QString exec;
+    HWND handle;
+};
+
+enum SelMove {
+    SELMOVE_NO,
+    SELMOVE_UP,
+    SELMOVE_DWN,
+    SELMOVE_TOP,
+    SELMOVE_BTM,
+    SELMOVE_MID
+};
+
+class MainWindow : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    QList<WinItem> witems;
+    explicit MainWindow(QWidget *parent = 0);
+    ~MainWindow();
+    Ui::MainWindow *ui;
+    QStandardItemModel *model;
+    QSortFilterProxyModel *proxy;
+
+private slots:
+    void onTextEnter();
+    void onWitemActivate(QModelIndex index);
+    void keyPressEvent(QKeyEvent *event);
+    void onTextChanged(const QString &text);
+    void quitMain(void);
+
+private:
+    virtual bool winEvent(MSG *message, long *result);
+    virtual void windowActivationChange(bool state);
+    void updateWinList(void);
+    void onHotkey(void);
+    void showMain(void);
+    void showWin(HWND handle);
+    void moveSel(SelMove mv);
+    uint getSelWinNum(void);
+
+    QSystemTrayIcon *trayIcon;
+    QMenu *trayIconMenu;
+    QAction *quitAction;
+};
+
+#endif  // #ifndef include guard
