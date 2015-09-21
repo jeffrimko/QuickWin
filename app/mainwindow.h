@@ -1,5 +1,13 @@
+/*=============================================================*/
+/* DEVELOPED 2015, REVISED 2015, Jeff Rimko.                   */
+/*=============================================================*/
+
 #ifndef _MAINWINDOW_H_  // Define include guard.
 #define _MAINWINDOW_H_
+
+/*=============================================================*/
+/* SECTION: Includes                                           */
+/*=============================================================*/
 
 #include <QMainWindow>
 #include <QStandardItemModel>
@@ -8,9 +16,17 @@
 #include <QSystemTrayIcon>
 #include <QMenu>
 
+/*=============================================================*/
+/* SECTION: Namespaces                                         */
+/*=============================================================*/
+
 namespace Ui {
 class MainWindow;
 }
+
+/*=============================================================*/
+/* SECTION: Global Definitions                                 */
+/*=============================================================*/
 
 struct WinItem {
     uint num;
@@ -34,7 +50,7 @@ class MainWindow : public QMainWindow
 
 public:
     QList<WinItem> witems;
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent=0);
     ~MainWindow();
     Ui::MainWindow *ui;
     QStandardItemModel *model;
@@ -46,6 +62,7 @@ private slots:
     void keyPressEvent(QKeyEvent *event);
     void onTextChanged(const QString &text);
     void quitMain(void);
+    void aboutMain(void);
 
 private:
     virtual bool winEvent(MSG *message, long *result);
@@ -59,6 +76,7 @@ private:
 
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;
+    QAction *aboutAction;
     QAction *quitAction;
 };
 

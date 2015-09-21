@@ -54,8 +54,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Set up system tray.
     trayIconMenu = new QMenu(this);
+    aboutAction = new QAction(tr("&About"), this);
     quitAction = new QAction(tr("&Quit"), this);
+    connect(aboutAction, SIGNAL(triggered()), this, SLOT(aboutMain()));
     connect(quitAction, SIGNAL(triggered()), this, SLOT(quitMain()));
+    trayIconMenu->addAction(aboutAction);
     trayIconMenu->addAction(quitAction);
     trayIcon = new QSystemTrayIcon(this);
     trayIcon->setContextMenu(trayIconMenu);
@@ -87,6 +90,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     updateWinList();
     showMain();
+}
+
+void MainWindow::aboutMain(void) {
+    QMessageBox::about(this,
+            QString("About QuickWin"),
+            QString("QuickWin " + gVerStr + "\n<a href='github.com/jeffrimko/QuickWin'>Home Page</a>"));
 }
 
 void MainWindow::quitMain(void) {
