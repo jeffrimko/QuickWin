@@ -1,0 +1,29 @@
+= QuickWin
+
+== Introduction
+This project provides a Windows application that allows quick keyboard-based switching between open windows as well as the ability to bookmark frequently used windows for quick return. QuickWin is meant to supplement standard alt-tabbing while providing additional window movement control for those comfortable navigating with a keyboard.
+
+== Status
+Currently, this project is **under active development**. The contents of the repository should be considered unstable during active development. There are plans to eventually port this project to other operating systems besides Windows.
+
+== Requirements
+QuickWin should run on most modern Windows releases starting with XP.
+
+== Installation
+These instructions will be provided once QuickWin is released.
+
+== Usage
+The following keyboard shortcuts are used to control QuickWin:
+
+  - `CTRL+SPACE` - Opens the QuickWin main window.
+  - `ENTER` - Switches to the selected window.
+  - `DOWN` or `CTRL+J` - Selects the next window in the list.
+  - `UP` or `CTRL+K` - Selects the previous window in the list.
+  - `CTRL+H` - Selects the top window in the list.
+  - `CTRL+L` - Selects the bottom window in the list.
+  - `CTRL+M` - Selects the middle window in the list.
+
+== Similar
+The following projects are similar and may be worth checking out:
+
+  - https://github.com/christianrondeau/GoToWindow[GoToWindow]
