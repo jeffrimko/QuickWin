@@ -10,7 +10,7 @@ Currently, this project is **under active development**. The contents of the rep
 QuickWin should run on most modern Windows releases starting with XP.
 
 == Installation
-These instructions will be provided once QuickWin is released.
+Unzip the release archive and run `quickwin.exe`.
 
 == Usage
 The following keyboard shortcuts are used to control QuickWin:
@@ -22,6 +22,8 @@ The following keyboard shortcuts are used to control QuickWin:
   - `CTRL+H` - Selects the top window in the list.
   - `CTRL+L` - Selects the bottom window in the list.
   - `CTRL+M` - Selects the middle window in the list.
+
+To exit QuickWin, use the system tray icon context menu.
 
 == Similar
 The following projects are similar and may be worth checking out:
