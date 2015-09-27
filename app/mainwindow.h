@@ -73,6 +73,7 @@ private:
     void showWin(HWND handle);
     void moveSel(SelMove mv);
     uint getSelWinNum(void);
+    void checkSavedWins(void);
 
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;

@@ -21,8 +21,11 @@
 /* SECTION: Local Data                                         */
 /*=============================================================*/
 
+/// Stores saved alias windows.
 QHash<QString, HWND> gSavedWins;
-QString gVerStr("0.1.0-alpha");
+
+/// The application version string.
+QString gVerStr("0.1.0");
 
 /*=============================================================*/
 /* SECTION: Local Prototypes                                   */
@@ -94,8 +97,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::aboutMain(void) {
     QMessageBox::about(this,
-            QString("About QuickWin"),
-            QString("QuickWin " + gVerStr + "\n<a href='github.com/jeffrimko/QuickWin'>Home Page</a>"));
+            "About QuickWin",
+            "QuickWin version `" + gVerStr + "`.\nVisit 'github.com/jeffrimko/QuickWin' for more information.");
+            // QString("About QuickWin"),
+            // QString("QuickWin " + gVerStr + "\n<a href='github.com/jeffrimko/QuickWin'>Home Page</a>"));
 }
 
 void MainWindow::quitMain(void) {
@@ -115,6 +120,25 @@ void MainWindow::updateWinList(void)
     ui->winView->setCurrentIndex(proxy->index(0,0));
     ui->noteText->clear();
     ui->noteText->append("QuickWin " + gVerStr + " found " + QString::number(witems.size()) + " windows.");
+}
+
+void MainWindow::checkSavedWins(void) {
+    if(gSavedWins.size()) {
+        QHashIterator<QString, HWND> i(gSavedWins);
+        while (i.hasNext()) {
+            i.next();
+            bool win_okay = false;
+            for(int j = 0; j < witems.size(); j++) {
+                if(witems[j].handle == i.value()) {
+                    win_okay = true;
+                    break;
+                }
+            }
+            if(false == win_okay) {
+                gSavedWins.remove(i.key());
+            }
+        }
+    }
 }
 
 void MainWindow::onTextChanged(const QString &text) {
@@ -146,7 +170,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             case Qt::Key_J: mv = SELMOVE_DWN; break;
             case Qt::Key_M: mv = SELMOVE_MID; break;
             case Qt::Key_C: hide_win = true; break;
+#ifndef QT_NO_DEBUG
             case Qt::Key_X: quit_app = true; break;
+#endif
         }
     } else {
         switch(event->key()) {
@@ -168,7 +194,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 }
 
 void MainWindow::moveSel(SelMove mv) {
-    /* Handle selection movement. */
+    // Handle selection movement.
     int row = ui->winView->currentIndex().row();
     if((SELMOVE_UP == mv) | (SELMOVE_DWN == mv)) {
         if(SELMOVE_UP == mv) {
@@ -273,7 +299,7 @@ bool MainWindow::winEvent( MSG * message, long * result )  {
 
 void MainWindow::onHotkey(void) {
     if((HWND)this->winId() == GetActiveWindow()) {
-        /* Already active window. */
+        // Already active window.
         moveSel(SELMOVE_DWN);
     }
     else {
@@ -282,7 +308,6 @@ void MainWindow::onHotkey(void) {
 }
 
 void MainWindow::showMain(void) {
-    // TODO: Check to see if aliases still exist.
     show();
     setWindowState( (windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
     raise();  // for MacOS
@@ -291,7 +316,7 @@ void MainWindow::showMain(void) {
     ui->findText->setFocus();
 }
 
-/* Callback for `EnumWindows` that lists out all window names. */
+// Callback for `EnumWindows` that lists out all window names.
 BOOL CALLBACK EnumWindowsProc(HWND hWnd, LPARAM lParam) {
     WinItem witem;
     MainWindow *mainwin = (MainWindow*)lParam;
@@ -311,11 +336,12 @@ BOOL CALLBACK EnumWindowsProc(HWND hWnd, LPARAM lParam) {
 
 void MainWindow::windowActivationChange(bool state) {
     if(state) {
-        /* Lost focus. */
+        // Lost focus.
         hide();
     } else {
-        /* In focus. */
+        // In focus.
         updateWinList();
+        checkSavedWins();
         showMain();
     }
 }
