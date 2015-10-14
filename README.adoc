@@ -32,6 +32,10 @@ Windows can be filtered by entering a portion of the desired name. Additionally,
 
 To exit QuickWin, use the system tray icon context menu.
 
+A demo of QuickWin in action is shown below:
+
+image:./doc/demos/demo_1.gif["QuickWin Demo", link="./doc/demos/demo_1.gif"]
+
 == Similar
 The following projects are similar and may be worth checking out:
 
