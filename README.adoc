@@ -23,6 +23,13 @@ The following keyboard shortcuts are used to control QuickWin:
   - `CTRL+L` - Selects the bottom window in the list.
   - `CTRL+M` - Selects the middle window in the list.
 
+Windows can be filtered by entering a portion of the desired name. Additionally, the following commands can be entered into the text field:
+
+  - `;s<NAME>` - Sets the selected window to alias `<NAME>`.
+  - `;g<NAME>` - Goes to the window with alias `<NAME>`.
+  - `;a` - Shows all alias names.
+  - `;d` - Deletes all alias names.
+
 To exit QuickWin, use the system tray icon context menu.
 
 == Similar
