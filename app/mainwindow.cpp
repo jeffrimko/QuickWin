@@ -6,6 +6,7 @@
 
 #define _WIN32_WINNT 0x0600
 #include <windows.h>
+#include <psapi.h>
 #include <QDesktopWidget>
 
 #include <Qt>
@@ -116,9 +117,10 @@ void MainWindow::updateWinList(void)
         model->insertRow(i);
         model->setData(model->index(i, 0), QString::number(witems[i].num));
         model->setData(model->index(i, 1), witems[i].title);
+        ui->noteText->append("EXEC " + witems[i].exec);
     }
     ui->winView->setCurrentIndex(proxy->index(0,0));
-    ui->noteText->clear();
+    // ui->noteText->clear();
     ui->noteText->append("QuickWin " + gVerStr + " found " + QString::number(witems.size()) + " windows.");
 }
 
@@ -320,15 +322,27 @@ void MainWindow::showMain(void) {
 BOOL CALLBACK EnumWindowsProc(HWND hWnd, LPARAM lParam) {
     WinItem witem;
     MainWindow *mainwin = (MainWindow*)lParam;
-    LPWSTR buff[255];
+    DWORD pid;
+
+
+    LPWSTR buff[1024];
     if( (IsWindowVisible(hWnd)) &&
         (IsAltTabWindow(hWnd)) &&
         ((HWND)mainwin->winId() != hWnd) )
     {
-        GetWindowText(hWnd, (LPWSTR)buff, 254);
+        GetWindowText(hWnd, (LPWSTR)buff, sizeof(buff));
         witem.title = QString::fromWCharArray((const LPWSTR)buff);
         witem.handle = hWnd;
         witem.num = mainwin->witems.size() + 1;
+        // if(GetProcessImageFileName(hWnd, (LPWSTR)buff, 254)) {
+        GetWindowThreadProcessId(hWnd, &pid);
+        HANDLE handle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, pid);
+        if(GetModuleFileNameEx(handle, NULL, (LPWSTR)buff, sizeof(buff))) {
+            witem.exec = QString::fromWCharArray((const LPWSTR)buff);
+            witem.exec = witem.exec.mid(witem.exec.lastIndexOf("\\") + 1);
+        } else {
+            witem.exec = QString("ERROR=" + QString::number(GetLastError()));
+        }
         mainwin->witems.append(witem);
     }
     return TRUE;
