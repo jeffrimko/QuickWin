@@ -43,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
         QMainWindow(parent),
         ui(new Ui::MainWindow),
         proxy(new QSortFilterProxyModel(parent)),
-        model(new QStandardItemModel(0, 2, parent))
+        model(new QStandardItemModel(0, 3, parent))
 {
     // Set the window style.
     Qt::WindowFlags flags = windowFlags();
@@ -80,6 +80,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->winView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     model->setHeaderData(0, Qt::Horizontal, QObject::tr("Number"));
     model->setHeaderData(1, Qt::Horizontal, QObject::tr("Title"));
+    model->setHeaderData(2, Qt::Horizontal, QObject::tr("Executable"));
+    ui->winView->header()->setResizeMode(1, QHeaderView::Stretch);
+
 
     connect(ui->findText, SIGNAL(returnPressed()),
             this,SLOT(onTextEnter()));
@@ -117,10 +120,10 @@ void MainWindow::updateWinList(void)
         model->insertRow(i);
         model->setData(model->index(i, 0), QString::number(witems[i].num));
         model->setData(model->index(i, 1), witems[i].title);
-        ui->noteText->append("EXEC " + witems[i].exec);
+        model->setData(model->index(i, 2), witems[i].exec);
     }
     ui->winView->setCurrentIndex(proxy->index(0,0));
-    // ui->noteText->clear();
+    ui->noteText->clear();
     ui->noteText->append("QuickWin " + gVerStr + " found " + QString::number(witems.size()) + " windows.");
 }
 
@@ -341,7 +344,9 @@ BOOL CALLBACK EnumWindowsProc(HWND hWnd, LPARAM lParam) {
             witem.exec = QString::fromWCharArray((const LPWSTR)buff);
             witem.exec = witem.exec.mid(witem.exec.lastIndexOf("\\") + 1);
         } else {
-            witem.exec = QString("ERROR=" + QString::number(GetLastError()));
+            // NOTE: Sometimes get error 299, think this is due to trying to
+            // get info on 64-bit process from a 32-bit one.
+            witem.exec = QString("NA");
         }
         mainwin->witems.append(witem);
     }
