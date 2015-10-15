@@ -32,7 +32,7 @@ def build(config):
     call("qmake")
     if not os.path.exists(build):
         os.makedir(build)
-    call("make %s" % (build))
+    status = call("make %s" % (build))
     # Copy over Qt DLLs.
     for dll in config['qt_dlls']:
         src = os.path.join(config['qt_bin_dir'], dll)
@@ -45,11 +45,14 @@ def build(config):
         if any([f.endswith(e) for e in config['build_dir_ext_rm']]):
             os.remove(os.path.join(build, f))
     # Run app.
-    if qprompt.ask_yesno("Run app?", dft=True):
-        retdir = os.getcwd()
-        os.chdir(build)
-        call("start quickwin.exe")
-        os.chdir(retdir)
+    if status == 0:
+        if qprompt.ask_yesno("Run app?", dft=True):
+            retdir = os.getcwd()
+            os.chdir(build)
+            call("start quickwin.exe")
+            os.chdir(retdir)
+    else:
+        qprompt.alert("ERROR: Build failed!")
 
 ##==============================================================#
 ## SECTION: Main Body                                           #
