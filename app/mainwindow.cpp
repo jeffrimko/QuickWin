@@ -337,15 +337,16 @@ BOOL CALLBACK EnumWindowsProc(HWND hWnd, LPARAM lParam) {
         witem.title = QString::fromWCharArray((const LPWSTR)buff);
         witem.handle = hWnd;
         witem.num = mainwin->witems.size() + 1;
-        // if(GetProcessImageFileName(hWnd, (LPWSTR)buff, 254)) {
         GetWindowThreadProcessId(hWnd, &pid);
+        // NOTE: The call to `OpenProcess()` is not well understood, find out
+        // more and document.
         HANDLE handle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, pid);
-        if(GetModuleFileNameEx(handle, NULL, (LPWSTR)buff, sizeof(buff))) {
+        // NOTE: Using `GetProcessImageFileName()` here fixes the 32/64-bit
+        // error.
+        if(GetProcessImageFileName(handle, (LPWSTR)buff, sizeof(buff))) {
             witem.exec = QString::fromWCharArray((const LPWSTR)buff);
             witem.exec = witem.exec.mid(witem.exec.lastIndexOf("\\") + 1);
         } else {
-            // NOTE: Sometimes get error 299, think this is due to trying to
-            // get info on 64-bit process from a 32-bit one.
             witem.exec = QString("NA");
         }
         mainwin->witems.append(witem);
