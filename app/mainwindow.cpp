@@ -81,8 +81,8 @@ MainWindow::MainWindow(QWidget *parent) :
     model->setHeaderData(0, Qt::Horizontal, QObject::tr("Number"));
     model->setHeaderData(1, Qt::Horizontal, QObject::tr("Title"));
     model->setHeaderData(2, Qt::Horizontal, QObject::tr("Executable"));
-    ui->winView->header()->setResizeMode(1, QHeaderView::Stretch);
-
+    ui->winView->header()->resizeSection(0, width * 0.08);
+    ui->winView->header()->resizeSection(1, width * 0.7);
 
     connect(ui->findText, SIGNAL(returnPressed()),
             this,SLOT(onTextEnter()));
@@ -103,8 +103,6 @@ void MainWindow::aboutMain(void) {
     QMessageBox::about(this,
             "About QuickWin",
             "QuickWin version `" + gVerStr + "`.\nVisit 'github.com/jeffrimko/QuickWin' for more information.");
-            // QString("About QuickWin"),
-            // QString("QuickWin " + gVerStr + "\n<a href='github.com/jeffrimko/QuickWin'>Home Page</a>"));
 }
 
 void MainWindow::quitMain(void) {
