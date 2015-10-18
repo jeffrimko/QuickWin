@@ -1,4 +1,14 @@
 = QuickWin Changelog
+== quickwin-0.2.0 (2015-10-17)
+=== Release highlights
+  - Added executable information.
+
+=== All additions and changes
+Not applicable.
+
+=== Bug fixes
+Not applicable.
+
 == quickwin-0.1.0 (2015-09-27)
 === Release highlights
   - First draft release.

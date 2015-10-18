@@ -26,7 +26,7 @@
 QHash<QString, HWND> gSavedWins;
 
 /// The application version string.
-QString gVerStr("0.1.0");
+QString gVerStr("0.2.0");
 
 /*=============================================================*/
 /* SECTION: Local Prototypes                                   */
@@ -336,8 +336,9 @@ BOOL CALLBACK EnumWindowsProc(HWND hWnd, LPARAM lParam) {
         witem.handle = hWnd;
         witem.num = mainwin->witems.size() + 1;
         GetWindowThreadProcessId(hWnd, &pid);
-        // NOTE: The call to `OpenProcess()` is not well understood, find out
-        // more and document.
+        // NOTE: This call is needed to allow access to metadata of the
+        // process. If original handle is used to for metadata read attempt, it
+        // will likely result in an error.
         HANDLE handle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, pid);
         // NOTE: Using `GetProcessImageFileName()` here fixes the 32/64-bit
         // error.
