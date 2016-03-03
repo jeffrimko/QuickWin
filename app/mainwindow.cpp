@@ -26,7 +26,7 @@
 QHash<QString, HWND> gSavedWins;
 
 /// The application version string.
-QString gVerStr("0.2.0");
+QString gVerStr("0.2.1-alpha");
 
 /*=============================================================*/
 /* SECTION: Local Prototypes                                   */
@@ -93,10 +93,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Register system-wide hotkey.
     HWND hwnd = (HWND)this->winId();
-    RegisterHotKey(hwnd, 100, MOD_CONTROL, VK_SPACE);
+    RegisterHotKey(hwnd, 100, MOD_CONTROL | MOD_ALT, VK_SPACE);
 
     updateWinList();
-    showMain();
 }
 
 void MainWindow::aboutMain(void) {
@@ -324,7 +323,6 @@ BOOL CALLBACK EnumWindowsProc(HWND hWnd, LPARAM lParam) {
     WinItem witem;
     MainWindow *mainwin = (MainWindow*)lParam;
     DWORD pid;
-
 
     LPWSTR buff[1024];
     if( (IsWindowVisible(hWnd)) &&
