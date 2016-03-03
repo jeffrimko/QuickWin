@@ -1,4 +1,4 @@
-release: false
+release: true
 run: true
 qt_bin_dir: C:\Qt\4.8.6\bin
 qt_dlls:
