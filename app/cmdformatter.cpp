@@ -6,10 +6,18 @@
 
 using namespace std;
 
-
-bool is_cmd(string cmd) {
+string get_cmd(string chk) {
     static const vector<string> cmd_types = {"help", "set", "get", "delete", "title", "number", "executable"};
-    return(find(cmd_types.begin(), cmd_types.end(), cmd) != cmd_types.end());
+    for(string cmd : cmd_types) {
+        if(0 == cmd.find(chk)) {
+            return(cmd);
+        }
+    }
+    return("");
+}
+
+bool is_cmd(string chk) {
+    return("" != get_cmd(chk));
 }
 
 /** Trims whitespace from edges of string. */
@@ -36,6 +44,7 @@ void update_cmds(cmds_t &cmds, string cmd, string arg, bool semi) {
         cmds.insert(pair<string,string>("title", cmd));
     } else if(is_cmd(cmd)) {
         // Erase existing data otherwise insert will do nothing if duplicate.
+        cmd = get_cmd(cmd);
         cmds.erase(cmd);
         cmds.insert(pair<string,string>(cmd, arg));
     }
