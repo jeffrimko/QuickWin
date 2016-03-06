@@ -1,13 +1,13 @@
 #include <iostream>
-#include <vector>
 #include <algorithm>
 
 #include "cmdformatter.h"
 
 using namespace std;
 
+const vector<string> cmd_types = {"aliases", "help", "set", "get", "delete", "title", "number", "executable"};
+
 string get_cmd(string chk) {
-    static const vector<string> cmd_types = {"alias", "help", "set", "get", "delete", "title", "number", "executable"};
     for(string cmd : cmd_types) {
         if(0 == cmd.find(chk)) {
             return(cmd);

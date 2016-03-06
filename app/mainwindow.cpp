@@ -305,6 +305,15 @@ void MainWindow::onTextEnter()
     // for (cmds_t::iterator it=cmds.begin(); it!=cmds.end(); ++it)
     //     ui->noteText->append(QString::fromStdString((*it).first) + " => " + QString::fromStdString((*it).second));
 
+    if(cmds.find("help") != cmds.end()) {
+        QString help = "Commands: ";
+        for(std::string cmd : cmd_types) {
+            help += QString::fromStdString(cmd);
+            help += " ";
+        }
+        ui->noteText->append(help);
+        stay = true;
+    }
     if(cmds.find("delete") != cmds.end()) {
         delAlias();
         stay = true;
@@ -314,7 +323,7 @@ void MainWindow::onTextEnter()
         setAlias(QString::fromStdString(cmds["set"]), num);
         stay = true;
     }
-    if(cmds.find("alias") != cmds.end()) {
+    if(cmds.find("aliases") != cmds.end()) {
         listAlias();
         stay = true;
     }
