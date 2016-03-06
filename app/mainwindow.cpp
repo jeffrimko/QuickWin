@@ -27,7 +27,7 @@
 QHash<QString, HWND> gSavedWins;
 
 /// The application version string.
-QString gVerStr("0.3.0-alpha");
+QString gVerStr("0.3.0");
 
 /*=============================================================*/
 /* SECTION: Local Prototypes                                   */

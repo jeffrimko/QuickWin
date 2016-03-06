@@ -1,5 +1,16 @@
 = QuickWin Changelog
 
+== quickwin-0.3.0 (2016-03-06)
+=== Release highlights
+  - Updated command syntax.
+  - Changed window window hotkey.
+
+=== All additions and changes
+Not applicable.
+
+=== Bug fixes
+Not applicable.
+
 == quickwin-0.2.0 (2015-10-17)
 === Release highlights
   - Added executable information.

@@ -15,7 +15,7 @@ Unzip the release archive and run `quickwin.exe`.
 == Usage
 The following keyboard shortcuts are used to control QuickWin:
 
-  - `CTRL+SPACE` - Opens the QuickWin main window.
+  - `CTRL+ALT+SPACE` - Opens the QuickWin main window.
   - `ENTER` - Switches to the selected window.
   - `DOWN` or `CTRL+J` - Selects the next window in the list.
   - `UP` or `CTRL+K` - Selects the previous window in the list.
@@ -25,10 +25,14 @@ The following keyboard shortcuts are used to control QuickWin:
 
 Windows can be filtered by entering a portion of the desired name. Additionally, the following commands can be entered into the text field:
 
-  - `;s<NAME>` - Sets the selected window to alias `<NAME>`.
-  - `;g<NAME>` - Goes to the window with alias `<NAME>`.
-  - `;a` - Shows all alias names.
-  - `;d` - Deletes all alias names.
+  - `;title <PATTERN>` - Filters by window title (default command).
+  - `;number <PATTERN>` - Filters by window number.
+  - `;executable <PATTERN>` - Filters by executable name.
+  - `;set <NAME>` - Sets the selected window to alias `<NAME>`.
+  - `;get <NAME>` - Goes to the window with alias `<NAME>`.
+  - `;aliases` - Shows all alias names.
+  - `;delete` - Deletes all alias names.
+  - `;help` - Shows help dialog.
 
 To exit QuickWin, use the system tray icon context menu.
 
