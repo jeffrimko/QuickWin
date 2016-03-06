@@ -145,15 +145,6 @@ void MainWindow::checkSavedWins(void) {
 }
 
 void MainWindow::onTextChanged(const QString &text) {
-    // static bool cmd_mode = false;
-    // int cidx = text.indexOf(QString(";"));
-    // cmd_mode = (cidx > -1);
-    // if(!cmd_mode) {
-    //     proxy->setFilterRegExp(QRegExp(text, Qt::CaseInsensitive,
-    //                                         QRegExp::Wildcard));
-    //     ui->winView->setCurrentIndex(proxy->index(0,0));
-    // }
-
     static QString prev_ptrn = "";
     cmds_t cmds;
     QString ptrn = "";
@@ -290,7 +281,6 @@ void MainWindow::setAlias(QString name, uint wnum) {
 }
 
 void MainWindow::delAlias(void) {
-    // COMMAND: Delete aliases.
     ui->noteText->append("Aliases deleted.");
     gSavedWins.clear();
     ui->cmdText->clear();
@@ -302,8 +292,6 @@ void MainWindow::onTextEnter()
     cmds_t cmds;
     QString text = ui->cmdText->text();
     format_cmds(cmds, text.toStdString());
-    // for (cmds_t::iterator it=cmds.begin(); it!=cmds.end(); ++it)
-    //     ui->noteText->append(QString::fromStdString((*it).first) + " => " + QString::fromStdString((*it).second));
 
     if(cmds.find("help") != cmds.end()) {
         QString help = "Commands: ";
@@ -336,54 +324,6 @@ void MainWindow::onTextEnter()
         }
     }
     ui->cmdText->clear();
-    // QString text = ui->cmdText->text();
-    // int cidx = text.indexOf(QString(";"));
-    // bool cmd_mode = (cidx > -1);
-
-    // if(!cmd_mode) {
-    //     onWitemActivate(ui->winView->currentIndex());
-    // } else {
-    //     // Handle special commands.
-    //     text = text.mid(cidx + 1);
-    //     if(text.size() == 0)
-    //         return;
-    //     if(text[0] == QChar('s')) {
-    //         // COMMAND: Set alias to selected window.
-    //         text = text.mid(1);
-    //         if(text.size() > 0) {
-    //             uint num = getSelWinNum();
-    //             gSavedWins[text] = witems[num].handle;
-    //             ui->noteText->append("Set " + QString::number(num+1) + " to alias '" + text + "'.");
-    //             ui->cmdText->clear();
-    //         }
-    //     } else if(text[0] == QChar('g')) {
-    //         // COMMAND: Goto aliased window.
-    //         showWin(gSavedWins[text.mid(1)]);
-    //     } else if(text[0] == QChar('a')) {
-    //         // COMMAND: List aliases.
-    //         if(gSavedWins.size()) {
-    //             QHashIterator<QString, HWND> i(gSavedWins);
-    //             QString alias("");
-    //             uint num = 0;
-    //             while (i.hasNext()) {
-    //                 i.next();
-    //                 alias.append(" '");
-    //                 alias.append(i.key());
-    //                 alias.append("'");
-    //                 num++;
-    //             }
-    //             ui->noteText->append("Found " + QString::number(num) + " aliases:" + alias);
-    //         } else {
-    //             ui->noteText->append("No aliases.");
-    //         }
-    //         ui->cmdText->clear();
-    //     } else if(text[0] == QChar('d')) {
-    //         // COMMAND: Delete aliases.
-    //         ui->noteText->append("Aliases deleted.");
-    //         gSavedWins.clear();
-    //         ui->cmdText->clear();
-    //     }
-    // }
 }
 
 bool MainWindow::winEvent( MSG * message, long * result )  {
