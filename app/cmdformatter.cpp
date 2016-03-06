@@ -5,10 +5,14 @@
 
 using namespace std;
 
-const vector<string> cmd_types = {"aliases", "help", "set", "get", "delete", "title", "number", "executable"};
+const vector<string> mCmdTypes = {"aliases", "help", "set", "get", "delete", "title", "number", "executable"};
+
+const std::vector<std::string> list_cmd_types(void) {
+    return(mCmdTypes);
+}
 
 string get_cmd(string chk) {
-    for(string cmd : cmd_types) {
+    for(string cmd : mCmdTypes) {
         if(0 == cmd.find(chk)) {
             return(cmd);
         }

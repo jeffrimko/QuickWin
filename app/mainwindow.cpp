@@ -307,7 +307,7 @@ void MainWindow::onTextEnter()
 
     if(cmds.find("help") != cmds.end()) {
         QString help = "Commands: ";
-        for(std::string cmd : cmd_types) {
+        for(std::string cmd : list_cmd_types()) {
             help += QString::fromStdString(cmd);
             help += " ";
         }
