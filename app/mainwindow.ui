@@ -26,7 +26,7 @@
          <enum>QLayout::SetDefaultConstraint</enum>
         </property>
         <item>
-         <widget class="QLineEdit" name="findText"/>
+         <widget class="QLineEdit" name="cmdText"/>
         </item>
        </layout>
       </item>

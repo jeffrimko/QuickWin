@@ -7,7 +7,7 @@
 using namespace std;
 
 string get_cmd(string chk) {
-    static const vector<string> cmd_types = {"help", "set", "get", "delete", "title", "number", "executable"};
+    static const vector<string> cmd_types = {"alias", "help", "set", "get", "delete", "title", "number", "executable"};
     for(string cmd : cmd_types) {
         if(0 == cmd.find(chk)) {
             return(cmd);

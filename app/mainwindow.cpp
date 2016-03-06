@@ -27,7 +27,7 @@
 QHash<QString, HWND> gSavedWins;
 
 /// The application version string.
-QString gVerStr("0.2.1-alpha");
+QString gVerStr("0.3.0-alpha");
 
 /*=============================================================*/
 /* SECTION: Local Prototypes                                   */
@@ -85,9 +85,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->winView->header()->resizeSection(0, width * 0.08);
     ui->winView->header()->resizeSection(1, width * 0.7);
 
-    connect(ui->findText, SIGNAL(returnPressed()),
+    connect(ui->cmdText, SIGNAL(returnPressed()),
             this,SLOT(onTextEnter()));
-    connect(ui->findText, SIGNAL(textChanged(const QString &)),
+    connect(ui->cmdText, SIGNAL(textChanged(const QString &)),
             this, SLOT(onTextChanged(const QString &)));
     connect(ui->winView, SIGNAL(activated(QModelIndex)),
             this, SLOT(onWitemActivate(QModelIndex)));
@@ -154,8 +154,9 @@ void MainWindow::onTextChanged(const QString &text) {
     //     ui->winView->setCurrentIndex(proxy->index(0,0));
     // }
 
+    static QString prev_ptrn = "";
     cmds_t cmds;
-    QString ptrn;
+    QString ptrn = "";
     format_cmds(cmds, text.toStdString());
     if("" != cmds["number"]) {
         proxy->setFilterKeyColumn(0);
@@ -167,8 +168,11 @@ void MainWindow::onTextChanged(const QString &text) {
         proxy->setFilterKeyColumn(1);
         ptrn = QString::fromStdString(cmds["title"]);
     }
-    proxy->setFilterRegExp(QRegExp(ptrn, Qt::CaseInsensitive, QRegExp::Wildcard));
-    ui->winView->setCurrentIndex(proxy->index(0,0));
+    if(prev_ptrn != ptrn) {
+        proxy->setFilterRegExp(QRegExp(ptrn, Qt::CaseInsensitive, QRegExp::Wildcard));
+        ui->winView->setCurrentIndex(proxy->index(0,0));
+    }
+    prev_ptrn = ptrn;
 }
 
 MainWindow::~MainWindow()
@@ -257,10 +261,73 @@ uint MainWindow::getSelWinNum(void) {
     return(num);
 }
 
+void MainWindow::getAlias(QString name) {
+    showWin(gSavedWins[name]);
+}
+
+void MainWindow::listAlias(void) {
+    if(gSavedWins.size()) {
+        QHashIterator<QString, HWND> i(gSavedWins);
+        QString alias("");
+        uint num = 0;
+        while (i.hasNext()) {
+            i.next();
+            alias.append(" '");
+            alias.append(i.key());
+            alias.append("'");
+            num++;
+        }
+        ui->noteText->append("Found " + QString::number(num) + " aliases:" + alias);
+    } else {
+        ui->noteText->append("No aliases.");
+    }
+}
+
+void MainWindow::setAlias(QString name, uint wnum) {
+    gSavedWins[name] = witems[wnum].handle;
+    ui->noteText->append("Set " + QString::number(wnum+1) + " to alias '" + name + "'.");
+    ui->cmdText->clear();
+}
+
+void MainWindow::delAlias(void) {
+    // COMMAND: Delete aliases.
+    ui->noteText->append("Aliases deleted.");
+    gSavedWins.clear();
+    ui->cmdText->clear();
+}
+
 void MainWindow::onTextEnter()
 {
-    onWitemActivate(ui->winView->currentIndex());
-    // QString text = ui->findText->text();
+    bool stay = false;
+    cmds_t cmds;
+    QString text = ui->cmdText->text();
+    format_cmds(cmds, text.toStdString());
+    // for (cmds_t::iterator it=cmds.begin(); it!=cmds.end(); ++it)
+    //     ui->noteText->append(QString::fromStdString((*it).first) + " => " + QString::fromStdString((*it).second));
+
+    if(cmds.find("delete") != cmds.end()) {
+        delAlias();
+        stay = true;
+    }
+    if("" != cmds["set"]) {
+        uint num = getSelWinNum();
+        setAlias(QString::fromStdString(cmds["set"]), num);
+        stay = true;
+    }
+    if(cmds.find("alias") != cmds.end()) {
+        listAlias();
+        stay = true;
+    }
+
+    if(!stay) {
+        if("" != cmds["get"]) {
+            getAlias(QString::fromStdString(cmds["get"]));
+        } else {
+            onWitemActivate(ui->winView->currentIndex());
+        }
+    }
+    ui->cmdText->clear();
+    // QString text = ui->cmdText->text();
     // int cidx = text.indexOf(QString(";"));
     // bool cmd_mode = (cidx > -1);
 
@@ -278,7 +345,7 @@ void MainWindow::onTextEnter()
     //             uint num = getSelWinNum();
     //             gSavedWins[text] = witems[num].handle;
     //             ui->noteText->append("Set " + QString::number(num+1) + " to alias '" + text + "'.");
-    //             ui->findText->clear();
+    //             ui->cmdText->clear();
     //         }
     //     } else if(text[0] == QChar('g')) {
     //         // COMMAND: Goto aliased window.
@@ -300,12 +367,12 @@ void MainWindow::onTextEnter()
     //         } else {
     //             ui->noteText->append("No aliases.");
     //         }
-    //         ui->findText->clear();
+    //         ui->cmdText->clear();
     //     } else if(text[0] == QChar('d')) {
     //         // COMMAND: Delete aliases.
     //         ui->noteText->append("Aliases deleted.");
     //         gSavedWins.clear();
-    //         ui->findText->clear();
+    //         ui->cmdText->clear();
     //     }
     // }
 }
@@ -332,8 +399,8 @@ void MainWindow::showMain(void) {
     setWindowState( (windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
     raise();  // for MacOS
     activateWindow(); // for Windows
-    ui->findText->clear();
-    ui->findText->setFocus();
+    ui->cmdText->clear();
+    ui->cmdText->setFocus();
 }
 
 // Callback for `EnumWindows` that lists out all window names.
