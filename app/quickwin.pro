@@ -10,6 +10,7 @@ LIBS += -lpsapi
 
 QMAKE_CXXFLAGS += -std=c++11
 
+DEFINES += __NO_INLINE__
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
