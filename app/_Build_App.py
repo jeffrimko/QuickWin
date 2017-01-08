@@ -5,9 +5,8 @@
 ##==============================================================#
 
 import os
-import functools
-import subprocess
-import shutil
+import auxly.filesys as fs
+import auxly.shell as sh
 
 import yaml
 
@@ -17,9 +16,6 @@ import qprompt
 ## SECTION: Global Definitions                                  #
 ##==============================================================#
 
-# Function alias.
-call = functools.partial(subprocess.call, shell=True)
-
 # Maintains the build type.
 BUILD = None
 
@@ -28,7 +24,7 @@ BUILD = None
 ##==============================================================#
 
 def kill():
-    call("taskkill /f /im quickwin.exe")
+    sh.call("taskkill /f /im quickwin.exe")
 
 def run():
     global BUILD
@@ -38,7 +34,7 @@ def run():
     retdir = os.getcwd()
     os.chdir(BUILD)
     kill()
-    call("start quickwin.exe")
+    sh.call("start quickwin.exe")
     os.chdir(retdir)
 
 def build(config):
@@ -47,23 +43,27 @@ def build(config):
     if not qprompt.ask_yesno("Build release (else debug)?", dft=config['release']):
         BUILD = "debug"
     # Build application.
-    call("uic mainwindow.ui >> ui_mainwindow.h")
-    call("qmake")
+    sh.call("uic mainwindow.ui >> ui_mainwindow.h")
+    sh.call("qmake")
     if not os.path.exists(BUILD):
         os.makedir(BUILD)
-    status = call("make %s" % (BUILD))
+    status = sh.call("make %s" % (BUILD))
     try:
         # Copy over Qt DLLs.
         for dll in config['qt_dlls']:
             src = os.path.join(config['qt_bin_dir'], dll)
-            shutil.copy(src, BUILD)
+            fs.copy(src, BUILD)
+        # Copy over MinGW DLLs.
+        for dll in config['mingw_dlls']:
+            src = os.path.join(config['mingw_bin_dir'], dll)
+            fs.copy(src, BUILD)
         # Copy over assets.
         for ast in config['assets']:
-            shutil.copy(ast, BUILD)
+            fs.copy(ast, BUILD)
         # Remove unnecessary files from build dir.
         for f in os.listdir(BUILD):
             if any([f.endswith(e) for e in config['build_dir_ext_rm']]):
-                os.remove(os.path.join(BUILD, f))
+                fs.delete(os.path.join(BUILD, f))
     except:
         qprompt.alert("File copy failed! Try killing app.")
         status = 1
@@ -86,4 +86,4 @@ if __name__ == '__main__':
     menu.add("k", "kill app", kill)
     menu.add("q", "quit")
     while "q" != menu.show():
-        pass
+        qprompt.hrule()

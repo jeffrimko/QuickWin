@@ -2,11 +2,13 @@ release: false
 run: true
 qt_bin_dir: C:\Qt\4.8.6\bin
 qt_dlls:
-  - libgcc_s_dw2-1.dll
-  - libstdc++-6.dll
   - libwinpthread-1.dll
   - QtCore4.dll
   - QtGui4.dll
+mingw_bin_dir: C:\MinGW\bin
+mingw_dlls:
+  - libgcc_s_dw2-1.dll
+  - libstdc++-6.dll
 assets:
   - icon.png
 build_dir_ext_rm:
