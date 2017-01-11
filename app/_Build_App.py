@@ -49,14 +49,9 @@ def build(config):
         os.makedir(BUILD)
     status = sh.call("make %s" % (BUILD))
     try:
-        # Copy over Qt DLLs.
-        for dll in config['qt_dlls']:
-            src = os.path.join(config['qt_bin_dir'], dll)
-            fs.copy(src, BUILD)
-        # Copy over MinGW DLLs.
-        for dll in config['mingw_dlls']:
-            src = os.path.join(config['mingw_bin_dir'], dll)
-            fs.copy(src, BUILD)
+        # Copy over DLLs.
+        for dll in config['dlls']:
+            fs.copy(dll, BUILD)
         # Copy over assets.
         for ast in config['assets']:
             fs.copy(ast, BUILD)
