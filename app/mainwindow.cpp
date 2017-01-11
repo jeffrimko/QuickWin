@@ -50,13 +50,6 @@ MainWindow::MainWindow(QWidget *parent) :
     Qt::WindowFlags flags = windowFlags();
     setWindowFlags(flags | Qt::WindowStaysOnTopHint | Qt::ToolTip);
 
-    // Center window.
-    QDesktopWidget *desktop = QApplication::desktop();
-    int width = desktop->width() * 0.6;
-    int height = desktop->height() * 0.6;
-    setFixedSize(width, height);
-    move((desktop->width() - width) / 2, (desktop->height() - height) / 2);
-
     // Set up system tray.
     trayIconMenu = new QMenu(this);
     aboutAction = new QAction(tr("&About"), this);
@@ -82,8 +75,7 @@ MainWindow::MainWindow(QWidget *parent) :
     model->setHeaderData(0, Qt::Horizontal, QObject::tr("Number"));
     model->setHeaderData(1, Qt::Horizontal, QObject::tr("Title"));
     model->setHeaderData(2, Qt::Horizontal, QObject::tr("Executable"));
-    ui->winView->header()->resizeSection(0, width * 0.08);
-    ui->winView->header()->resizeSection(1, width * 0.7);
+    sizePosMain();
 
     connect(ui->cmdText, SIGNAL(returnPressed()),
             this,SLOT(onTextEnter()));
@@ -97,6 +89,18 @@ MainWindow::MainWindow(QWidget *parent) :
     RegisterHotKey(hwnd, 100, MOD_CONTROL | MOD_ALT, VK_SPACE);
 
     updateWinList();
+}
+
+void MainWindow::sizePosMain(void) {
+    // Center window.
+    QDesktopWidget *desktop = QApplication::desktop();
+    int width = desktop->width() * 0.6;
+    int height = desktop->height() * 0.6;
+    setFixedSize(width, height);
+    move((desktop->width() - width) / 2, (desktop->height() - height) / 2);
+
+    ui->winView->header()->resizeSection(0, width * 0.08);
+    ui->winView->header()->resizeSection(1, width * 0.7);
 }
 
 void MainWindow::aboutMain(void) {
@@ -344,6 +348,7 @@ void MainWindow::onHotkey(void) {
 }
 
 void MainWindow::showMain(void) {
+    sizePosMain();
     show();
     setWindowState( (windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
     raise();  // for MacOS

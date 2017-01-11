@@ -69,6 +69,7 @@ private:
     virtual void windowActivationChange(bool state);
     void updateWinList(void);
     void onHotkey(void);
+    void sizePosMain(void);
     void showMain(void);
     void showWin(HWND handle);
     void moveSel(SelMove mv);
