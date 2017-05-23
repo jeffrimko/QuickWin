@@ -2,28 +2,24 @@
 ## SECTION: Imports                                             #
 ##==============================================================#
 
-import shutil
-import os
+import auxly.filesys as fs
 
 ##==============================================================#
 ## SECTION: Function Definitions                                #
 ##==============================================================#
 
-def rm_if_exists(target, is_file=True):
-    if os.path.exists(target):
-        if is_file:
-            os.remove(target)
-        else:
-            shutil.rmtree(target)
+def cleanup():
+    fs.delete("release")
+    fs.delete(".", regex=r"\.pyc$")
+    fs.delete("debug")
+    fs.delete("ui_mainwindow.h")
+    fs.delete("Makefile")
+    fs.delete("Makefile.Debug")
+    fs.delete("Makefile.Release")
 
 ##==============================================================#
 ## SECTION: Main Body                                           #
 ##==============================================================#
 
 if __name__ == '__main__':
-    rm_if_exists("release", is_file=False)
-    rm_if_exists("debug", is_file=False)
-    rm_if_exists("ui_mainwindow.h")
-    rm_if_exists("Makefile")
-    rm_if_exists("Makefile.Debug")
-    rm_if_exists("Makefile.Release")
+    cleanup()

@@ -12,6 +12,8 @@ import yaml
 
 import qprompt
 
+from _Cleanup import cleanup
+
 ##==============================================================#
 ## SECTION: Global Definitions                                  #
 ##==============================================================#
@@ -79,4 +81,5 @@ if __name__ == '__main__':
     menu.add("b", "Build app", build, [config])
     menu.add("r", "Run app", run)
     menu.add("k", "Kill app", kill)
+    menu.add("c", "Cleanup", cleanup)
     menu.main(loop=True)
