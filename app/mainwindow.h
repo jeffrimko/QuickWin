@@ -32,6 +32,7 @@ struct WinItem {
     uint num;
     QString title;
     QString exec;
+    QString alias;
     HWND handle;
 };
 
