@@ -76,9 +76,7 @@ def build(config):
 if __name__ == '__main__':
     config = yaml.load(open("build.yaml").read())
     menu = qprompt.Menu()
-    menu.add("b", "build app", build, [config])
-    menu.add("r", "run app", run)
-    menu.add("k", "kill app", kill)
-    menu.add("q", "quit")
-    while "q" != menu.show():
-        qprompt.hrule()
+    menu.add("b", "Build app", build, [config])
+    menu.add("r", "Run app", run)
+    menu.add("k", "Kill app", kill)
+    menu.main(loop=True)
