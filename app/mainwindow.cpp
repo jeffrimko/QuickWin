@@ -27,7 +27,7 @@
 QHash<QString, HWND> gSavedWins;
 
 /// The application version string.
-QString gVerStr("0.3.0");
+QString gVerStr("0.3.1-alpha");
 
 /*=============================================================*/
 /* SECTION: Local Prototypes                                   */
@@ -44,7 +44,7 @@ MainWindow::MainWindow(QWidget *parent) :
         QMainWindow(parent),
         ui(new Ui::MainWindow),
         proxy(new QSortFilterProxyModel(parent)),
-        model(new QStandardItemModel(0, 3, parent))
+        model(new QStandardItemModel(0, 4, parent))
 {
     // Set the window style.
     Qt::WindowFlags flags = windowFlags();
@@ -75,6 +75,7 @@ MainWindow::MainWindow(QWidget *parent) :
     model->setHeaderData(0, Qt::Horizontal, QObject::tr("Number"));
     model->setHeaderData(1, Qt::Horizontal, QObject::tr("Title"));
     model->setHeaderData(2, Qt::Horizontal, QObject::tr("Executable"));
+    model->setHeaderData(3, Qt::Horizontal, QObject::tr("Alias"));
     sizePosMain();
 
     connect(ui->cmdText, SIGNAL(returnPressed()),
@@ -123,6 +124,19 @@ void MainWindow::updateWinList(void)
         model->setData(model->index(i, 0), QString::number(witems[i].num));
         model->setData(model->index(i, 1), witems[i].title);
         model->setData(model->index(i, 2), witems[i].exec);
+        // Ugh. This is temporary I promise. Just need it working for now...
+        QString alias = "";
+        if(gSavedWins.size()) {
+            QHashIterator<QString, HWND> j(gSavedWins);
+            while (j.hasNext()) {
+                j.next();
+                if(witems[i].handle == j.value()) {
+                    alias = j.key();
+                    break;
+                }
+            }
+        }
+        model->setData(model->index(i, 3), alias);
     }
     ui->winView->setCurrentIndex(proxy->index(0,0));
     ui->noteText->clear();
@@ -282,12 +296,14 @@ void MainWindow::setAlias(QString name, uint wnum) {
     gSavedWins[name] = witems[wnum].handle;
     ui->noteText->append("Set " + QString::number(wnum+1) + " to alias '" + name + "'.");
     ui->cmdText->clear();
+    updateWinList();
 }
 
 void MainWindow::delAlias(void) {
     ui->noteText->append("Aliases deleted.");
     gSavedWins.clear();
     ui->cmdText->clear();
+    updateWinList();
 }
 
 void MainWindow::onTextEnter()
