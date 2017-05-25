@@ -143,24 +143,24 @@ void MainWindow::updateWinList(bool clear_note) {
     }
 }
 
-// void MainWindow::checkSavedWins(void) {
-//     if(gSavedWins.size()) {
-//         QHashIterator<QString, HWND> i(gSavedWins);
-//         while (i.hasNext()) {
-//             i.next();
-//             bool win_okay = false;
-//             for(int j = 0; j < witems.size(); j++) {
-//                 if(witems[j].handle == i.value()) {
-//                     win_okay = true;
-//                     break;
-//                 }
-//             }
-//             if(false == win_okay) {
-//                 gSavedWins.remove(i.key());
-//             }
-//         }
-//     }
-// }
+void MainWindow::checkSavedWins(void) {
+    if(gSavedWins.size()) {
+        QHashIterator<HWND, QString> i(gSavedWins);
+        while (i.hasNext()) {
+            i.next();
+            bool win_okay = false;
+            for(int j = 0; j < witems.size(); j++) {
+                if(witems[j].handle == i.key()) {
+                    win_okay = true;
+                    break;
+                }
+            }
+            if(false == win_okay) {
+                gSavedWins.remove(i.key());
+            }
+        }
+    }
+}
 
 void MainWindow::onTextChanged(const QString &text) {
     static QString prev_ptrn = "";
@@ -273,44 +273,6 @@ uint MainWindow::getSelWinNum(void) {
     return(num);
 }
 
-// void MainWindow::getAlias(QString name) {
-//     showWin(gSavedWins[name]);
-// }
-
-// void MainWindow::listAlias(void) {
-//     if(gSavedWins.size()) {
-//         QHashIterator<QString, HWND> i(gSavedWins);
-//         QString alias("");
-//         uint num = 0;
-//         while (i.hasNext()) {
-//             i.next();
-//             alias.append(" '");
-//             alias.append(i.key());
-//             alias.append("'");
-//             num++;
-//         }
-//         ui->noteText->append("Found " + QString::number(num) + " aliases:" + alias);
-//     } else {
-//         ui->noteText->append("No aliases.");
-//     }
-// }
-
-void MainWindow::setAlias(QString name, uint wnum) {
-    // gSavedWins[name] = witems[wnum].handle;
-    gSavedWins[witems[wnum].handle] = name;
-    // witems[wnum].alias = name;
-    ui->noteText->append("Set " + QString::number(wnum+1) + " to alias '" + name + "'.");
-    ui->cmdText->clear();
-    updateWinList(false);
-}
-
-void MainWindow::delAlias(void) {
-    ui->noteText->append("Aliases deleted.");
-    gSavedWins.clear();
-    ui->cmdText->clear();
-    updateWinList(false);
-}
-
 void MainWindow::onTextEnter()
 {
     bool stay = false;
@@ -328,28 +290,29 @@ void MainWindow::onTextEnter()
         stay = true;
     }
     if(cmds.find("delete") != cmds.end()) {
-        delAlias();
+        gSavedWins.clear();
+        ui->noteText->append("Aliases deleted.");
         stay = true;
     }
-    if("" != cmds["set"]) {
+    if(cmds.find("set") != cmds.end()) {
         uint num = getSelWinNum();
-        setAlias(QString::fromStdString(cmds["set"]), num);
+        if("" != cmds["set"]) {
+            QString name = QString::fromStdString(cmds["set"]);
+            gSavedWins[witems[num].handle] = name;
+            ui->noteText->append("Set " + QString::number(num+1) + " to alias '" + name + "'.");
+        } else {
+            gSavedWins.remove(witems[num].handle);
+            ui->noteText->append("Removed alias from " + QString::number(num+1) + ".");
+        }
         stay = true;
     }
-    // if(cmds.find("aliases") != cmds.end()) {
-    //     listAlias();
-    //     stay = true;
-    // }
 
     if(!stay) {
-        // if("" != cmds["get"]) {
-        //     getAlias(QString::fromStdString(cmds["get"]));
-        // } else {
-        //     onWitemActivate(ui->winView->currentIndex());
-        // }
         onWitemActivate(ui->winView->currentIndex());
+    } else {
+        ui->cmdText->clear();
+        updateWinList(false);
     }
-    ui->cmdText->clear();
 }
 
 bool MainWindow::winEvent( MSG * message, long * result )  {
@@ -419,7 +382,7 @@ void MainWindow::windowActivationChange(bool state) {
     } else {
         // In focus.
         updateWinList(true);
-        // checkSavedWins();
+        checkSavedWins();
         showMain();
     }
 }

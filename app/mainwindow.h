@@ -75,10 +75,6 @@ private:
     void moveSel(SelMove mv);
     uint getSelWinNum(void);
     void checkSavedWins(void);
-    void listAlias(void);
-    void delAlias(void);
-    void setAlias(QString name, uint wnum);
-    void getAlias(QString name);
 
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;
