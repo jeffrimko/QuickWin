@@ -5,7 +5,7 @@
 
 using namespace std;
 
-const vector<string> mCmdTypes = {"aliases", "help", "set", "get", "delete", "title", "number", "executable"};
+const vector<string> mCmdTypes = {"help", "set", "get", "delete", "title", "number", "executable"};
 
 const std::vector<std::string> list_cmd_types(void) {
     return(mCmdTypes);

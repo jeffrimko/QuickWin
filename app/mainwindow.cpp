@@ -122,19 +122,6 @@ void MainWindow::updateWinList(bool clear_note) {
         model->setData(model->index(i, 1), witems[i].title);
         model->setData(model->index(i, 2), witems[i].exec);
         model->setData(model->index(i, 3), gSavedWins[witems[i].handle]);
-        // Ugh. This is temporary I promise. Just need it working for now...
-        // QString alias = "";
-        // if(gSavedWins.size()) {
-        //     QHashIterator<QString, HWND> j(gSavedWins);
-        //     while (j.hasNext()) {
-        //         j.next();
-        //         if(witems[i].handle == j.value()) {
-        //             alias = j.key();
-        //             break;
-        //         }
-        //     }
-        // }
-        // model->setData(model->index(i, 3), alias);
     }
     ui->winView->setCurrentIndex(proxy->index(0,0));
     if(clear_note) {
