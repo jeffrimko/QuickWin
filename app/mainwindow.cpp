@@ -173,9 +173,13 @@ void MainWindow::onTextChanged(const QString &text) {
     } else if("" != cmds["executable"]) {
         proxy->setFilterKeyColumn(2);
         ptrn = QString::fromStdString(cmds["executable"]);
-    } else if("" != cmds["get"]) {
+    } else if(cmds.find("get") != cmds.end()) {
         proxy->setFilterKeyColumn(3);
-        ptrn = QString::fromStdString(cmds["get"]);
+        if("" != cmds["get"]) {
+            ptrn = QString::fromStdString(cmds["get"]);
+        } else {
+            ptrn = "?";
+        }
     } else {
         proxy->setFilterKeyColumn(1);
         ptrn = QString::fromStdString(cmds["title"]);
