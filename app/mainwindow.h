@@ -32,7 +32,6 @@ struct WinItem {
     uint num;
     QString title;
     QString exec;
-    QString alias;
     HWND handle;
 };
 
@@ -68,7 +67,7 @@ private slots:
 private:
     virtual bool winEvent(MSG *message, long *result);
     virtual void windowActivationChange(bool state);
-    void updateWinList(void);
+    void updateWinList(bool clear_note);
     void onHotkey(void);
     void sizePosMain(void);
     void showMain(void);
