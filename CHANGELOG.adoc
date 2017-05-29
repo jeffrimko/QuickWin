@@ -1,9 +1,19 @@
 = QuickWin Changelog
 
+== quickwin-0.4.0 (2017-05-28)
+=== Release highlights
+  - Updated alias handling; aliases are now shown in main window column.
+
+=== All additions and changes
+Not applicable.
+
+=== Bug fixes
+Not applicable.
+
 == quickwin-0.3.0 (2016-03-06)
 === Release highlights
   - Updated command syntax.
-  - Changed window window hotkey.
+  - Changed main window hotkey.
 
 === All additions and changes
 Not applicable.

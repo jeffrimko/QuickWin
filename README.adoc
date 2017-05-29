@@ -4,10 +4,14 @@
 This project provides a Windows application that allows quick keyboard-based switching between open windows as well as the ability to bookmark frequently used windows for quick return. QuickWin is meant to supplement standard alt-tabbing while providing additional window movement control for those comfortable navigating with a keyboard.
 
 == Status
-Currently, this project is **under active development**. The contents of the repository should be considered unstable during active development. There are plans to eventually port this project to other operating systems besides Windows.
+The status of this project is **beta**. This project is suitable for use but there may be incompatibilities in new releases.
+
+The release changelog is available link:CHANGELOG.adoc[here].
 
 == Requirements
-QuickWin should run on most modern Windows releases starting with XP.
+To build QuickWin, run the `_Check_Dependencies` script to determine if the dependencies are met.
+
+To run QuickWin, a modern release of Windows (XP or newer) is required.
 
 == Installation
 Unzip the release archive and run `quickwin.exe`.
@@ -25,12 +29,11 @@ The following keyboard shortcuts are used to control QuickWin:
 
 Windows can be filtered by entering a portion of the desired name. Additionally, the following commands can be entered into the text field:
 
-  - `;title <PATTERN>` - Filters by window title (default command).
+  - `;title <PATTERN>` - Filters by window title (default command and will execute if non-command text is entered).
   - `;number <PATTERN>` - Filters by window number.
   - `;executable <PATTERN>` - Filters by executable name.
   - `;set <NAME>` - Sets the selected window to alias `<NAME>`.
   - `;get <NAME>` - Goes to the window with alias `<NAME>`.
-  - `;aliases` - Shows all alias names.
   - `;delete` - Deletes all alias names.
   - `;help` - Shows help dialog.
 
@@ -39,6 +42,9 @@ To exit QuickWin, use the system tray icon context menu.
 A demo of QuickWin in action is shown below:
 
 image:./doc/demos/demo_1.gif["QuickWin Demo", link="./doc/demos/demo_1.gif"]
+
+== Roadmap
+There are plans to eventually port this project to other operating systems besides Windows.
 
 == Similar
 The following projects are similar and may be worth checking out:
