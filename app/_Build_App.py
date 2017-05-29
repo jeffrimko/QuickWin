@@ -39,11 +39,9 @@ def run():
     sh.call("start quickwin.exe")
     os.chdir(retdir)
 
-def build(config):
+def build(config, btype="release"):
     global BUILD
-    BUILD = "release"
-    if not qprompt.ask_yesno("Build release (else debug)?", dft=config['release']):
-        BUILD = "debug"
+    BUILD = btype
     # Build application.
     sh.call("uic mainwindow.ui >> ui_mainwindow.h")
     sh.call("qmake")
@@ -64,12 +62,10 @@ def build(config):
     except:
         qprompt.alert("File copy failed! Try killing app.")
         status = 1
-    # Run app.
     if status == 0:
-        if qprompt.ask_yesno("Run app?", dft=True):
-            run()
+        qprompt.alert("Build succeeded.")
     else:
-        qprompt.alert("ERROR: Build failed!")
+        qprompt.error("Build failed!")
 
 ##==============================================================#
 ## SECTION: Main Body                                           #
@@ -78,7 +74,8 @@ def build(config):
 if __name__ == '__main__':
     config = yaml.load(open("build.yaml").read())
     menu = qprompt.Menu()
-    menu.add("b", "Build app", build, [config])
+    menu.add("b", "Build release", build, [config, "release"])
+    menu.add("d", "Build debug", build, [config, "debug"])
     menu.add("r", "Run app", run)
     menu.add("k", "Kill app", kill)
     menu.add("c", "Cleanup", cleanup)
