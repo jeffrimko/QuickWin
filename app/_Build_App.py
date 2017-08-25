@@ -5,12 +5,11 @@
 ##==============================================================#
 
 import os
+
 import auxly.filesys as fs
 import auxly.shell as sh
-
-import yaml
-
 import qprompt
+import yaml
 
 from _Cleanup import cleanup
 
@@ -19,46 +18,45 @@ from _Cleanup import cleanup
 ##==============================================================#
 
 # Maintains the build type.
-BUILD = None
+BTYPE = None
 
 ##==============================================================#
 ## SECTION: Function Definitions                                #
 ##==============================================================#
 
+@qprompt.status("Killing running QuickWin...")
 def kill():
-    sh.call("taskkill /f /im quickwin.exe")
+    sh.silent("taskkill /f /im quickwin.exe")
 
 def run():
-    global BUILD
-    if None == BUILD:
+    global BTYPE
+    if None == BTYPE:
         qprompt.alert("[WARNING] Build app first!")
         return
-    retdir = os.getcwd()
-    os.chdir(BUILD)
-    kill()
-    sh.call("start quickwin.exe")
-    os.chdir(retdir)
+    with fs.Cwd(BTYPE):
+        kill()
+        sh.call("start quickwin.exe")
 
 def build(config, btype="release"):
-    global BUILD
-    BUILD = btype
+    global BTYPE
+    BTYPE = btype
     # Build application.
     sh.call("uic mainwindow.ui >> ui_mainwindow.h")
     sh.call("qmake")
-    if not os.path.exists(BUILD):
-        os.makedir(BUILD)
-    status = sh.call("make %s" % (BUILD))
+    if not os.path.exists(BTYPE):
+        fs.makedirs(BTYPE)
+    status = sh.call("make %s" % (BTYPE))
     try:
         # Copy over DLLs.
         for dll in config['dlls']:
-            fs.copy(dll, BUILD)
+            fs.copy(dll, BTYPE)
         # Copy over assets.
         for ast in config['assets']:
-            fs.copy(ast, BUILD)
+            fs.copy(ast, BTYPE)
         # Remove unnecessary files from build dir.
-        for f in os.listdir(BUILD):
+        for f in os.listdir(BTYPE):
             if any([f.endswith(e) for e in config['build_dir_ext_rm']]):
-                fs.delete(os.path.join(BUILD, f))
+                fs.delete(os.path.join(BTYPE, f))
     except:
         qprompt.alert("File copy failed! Try killing app.")
         status = 1
@@ -72,6 +70,7 @@ def build(config, btype="release"):
 ##==============================================================#
 
 if __name__ == '__main__':
+    qprompt.title("QuickWin Build")
     config = yaml.load(open("build.yaml").read())
     menu = qprompt.Menu()
     menu.add("b", "Build release", build, [config, "release"])
