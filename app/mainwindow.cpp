@@ -93,10 +93,13 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::sizePosMain(void) {
     // Center window.
     QDesktopWidget *desktop = QApplication::desktop();
-    int width = desktop->width() * 0.6;
-    int height = desktop->height() * 0.6;
+    int width = desktop->screenGeometry(desktop->primaryScreen()).width() * 0.6;
+    int height = desktop->screenGeometry(desktop->primaryScreen()).height() * 0.6;
     setFixedSize(width, height);
-    move((desktop->width() - width) / 2, (desktop->height() - height) / 2);
+    move(
+            (desktop->screenGeometry(desktop->primaryScreen()).width() - width) / 2,
+            (desktop->screenGeometry(desktop->primaryScreen()).height() - height) / 2
+        );
 
     ui->winView->header()->resizeSection(0, width * 0.08);
     ui->winView->header()->resizeSection(1, width * 0.7);
