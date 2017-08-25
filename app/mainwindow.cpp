@@ -25,7 +25,7 @@
 QHash<HWND, QString> gSavedWins;
 
 /// The application version string.
-QString gVerStr("0.4.0");
+QString gVerStr("0.5.0-alpha");
 
 /*=============================================================*/
 /* SECTION: Local Prototypes                                   */
@@ -195,6 +195,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             case Qt::Key_K: mv = SELMOVE_UP; break;
             case Qt::Key_J: mv = SELMOVE_DWN; break;
             case Qt::Key_M: mv = SELMOVE_MID; break;
+            case Qt::Key_E: mv = SELMOVE_EXE; break;
+            case Qt::Key_S: onWitemActivate(ui->winView->currentIndex());
             case Qt::Key_C: hide_win = true; break;
 #ifndef QT_NO_DEBUG
             case Qt::Key_X: quit_app = true; break;
@@ -242,6 +244,19 @@ void MainWindow::moveSel(SelMove mv) {
         ui->winView->setCurrentIndex(proxy->index(proxy->rowCount()/2,0));
     } else if(SELMOVE_BTM == mv) {
         ui->winView->setCurrentIndex(proxy->index(proxy->rowCount()-1,0));
+    } else if(SELMOVE_EXE == mv) {
+        QString exec = witems[row].exec;
+        int idx = row + 1;
+        while(idx != row) {
+            if(idx >= witems.size()) {
+                idx = 0;
+            }
+            if(exec == witems[idx].exec) {
+                break;
+            }
+            idx++;
+        }
+        ui->winView->setCurrentIndex(proxy->index(idx,0));
     }
 }
 

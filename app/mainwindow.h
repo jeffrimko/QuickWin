@@ -41,7 +41,8 @@ enum SelMove {
     SELMOVE_DWN,
     SELMOVE_TOP,
     SELMOVE_BTM,
-    SELMOVE_MID
+    SELMOVE_MID,
+    SELMOVE_EXE
 };
 
 class MainWindow : public QMainWindow
