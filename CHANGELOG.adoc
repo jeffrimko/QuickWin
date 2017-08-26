@@ -1,5 +1,15 @@
 = QuickWin Changelog
 
+== quickwin-0.5.0 (2017-08-26)
+=== Release highlights
+  - Added CTRL-E shortcut to jump between windows of same executable.
+
+=== All additions and changes
+Not applicable.
+
+=== Bug fixes
+Not applicable.
+
 == quickwin-0.4.0 (2017-05-28)
 === Release highlights
   - Updated alias handling; aliases are now shown in main window column.

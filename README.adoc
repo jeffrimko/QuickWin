@@ -20,12 +20,13 @@ Unzip the release archive and run `quickwin.exe`.
 The following keyboard shortcuts are used to control QuickWin:
 
   - `CTRL+ALT+SPACE` - Opens the QuickWin main window.
-  - `ENTER` - Switches to the selected window.
+  - `ENTER` or `CTRL+S` - Switches to the selected window.
   - `DOWN` or `CTRL+J` - Selects the next window in the list.
   - `UP` or `CTRL+K` - Selects the previous window in the list.
   - `CTRL+H` - Selects the top window in the list.
   - `CTRL+L` - Selects the bottom window in the list.
   - `CTRL+M` - Selects the middle window in the list.
+  - `CTRL+E` - Jump between windows of same executable.
 
 Windows can be filtered by entering a portion of the desired name. Additionally, the following commands can be entered into the text field:
 
