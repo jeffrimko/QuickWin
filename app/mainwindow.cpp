@@ -248,13 +248,15 @@ void MainWindow::moveSel(SelMove mv) {
     } else if(SELMOVE_BTM == mv) {
         ui->winView->setCurrentIndex(proxy->index(proxy->rowCount()-1,0));
     } else if(SELMOVE_EXE == mv) {
-        QString exec = witems[row].exec;
+        QString exec = proxy->data(proxy->index(row,2)).toString();
         int idx = row + 1;
         while(idx != row) {
-            if(idx >= witems.size()) {
+            int rc = proxy->rowCount();
+            if(idx >= rc) {
                 idx = 0;
             }
-            if(exec == witems[idx].exec) {
+            QString rexec = proxy->data(proxy->index(idx,2)).toString();
+            if(exec == rexec) {
                 break;
             }
             idx++;
