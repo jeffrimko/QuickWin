@@ -32,17 +32,17 @@ call:ChkDep^
     "latest"^
     python -V
 call:ChkDep^
-    "PyYaml"^
+    "PyYAML"^
     "Python YAML library."^
     "http://pyyaml.org/"^
     "latest"^
     python -c "import yaml"
 call:ChkDep^
-    "Qprompt"^
-    "Python CLI library."^
-    "github.com/jeffrimko/Qprompt"^
+    "Ubuild"^
+    "Python build script framework."^
+    "github.com/jeffrimko/Ubuild"^
     "latest"^
-    python -c "import qprompt"
+    python -c "import ubuild"
 
 pause
 exit /b 0
