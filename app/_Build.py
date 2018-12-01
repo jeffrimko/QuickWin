@@ -53,10 +53,12 @@ def build(btype="release"):
     except:
         qprompt.alert("File copy failed! Try killing app.")
         status = 1
+    qprompt.hrule()
     if status == 0:
         qprompt.alert("Build succeeded.")
     else:
         qprompt.error("Build failed!")
+    qprompt.hrule()
 
 @menu
 def clean():

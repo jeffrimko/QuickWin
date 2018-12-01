@@ -25,7 +25,7 @@
 QHash<HWND, QString> gSavedWins;
 
 /// The application version string.
-QString gVerStr("0.5.0");
+QString gVerStr("0.5.1");
 
 /*=============================================================*/
 /* SECTION: Local Prototypes                                   */
@@ -156,6 +156,15 @@ void MainWindow::onTextChanged(const QString &text) {
     static QString prev_ptrn = "";
     cmds_t cmds;
     QString ptrn = "";
+
+    QString ctxt = ui->cmdText->text();
+    if (ctxt == " ")
+    {
+        ui->cmdText->clear();
+        moveSel(SELMOVE_EXE);
+        return;
+    }
+
     format_cmds(cmds, text.toStdString());
     if("" != cmds["number"]) {
         proxy->setFilterKeyColumn(0);
