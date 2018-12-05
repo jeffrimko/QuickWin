@@ -1,7 +1,7 @@
 = QuickWin Changelog
 
 == quickwin-0.5.2 (2018-12-04)
-=== Added
+=== Changed
   - Minor change to `CTRL+SPACE` shortcut to make it work even if there is command text already entered.
 
 == quickwin-0.5.1 (2018-12-01)
