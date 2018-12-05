@@ -26,8 +26,8 @@ The following keyboard shortcuts are used to control QuickWin:
   - `CTRL+H` - Selects the top window in the list.
   - `CTRL+L` - Selects the bottom window in the list.
   - `CTRL+M` - Selects the middle window in the list.
-  - `CTRL+E` - Jump between windows of same executable.
-  - `SPACE` or `CTRL+SPACE` - If no other text is in the command text field, jump between windows of the same executable.
+  - `CTRL+E` or `CTRL+SPACE` - Jump between windows of same executable.
+  - `SPACE` - If no other text is in the command text field, jump between windows of the same executable.
 
 Windows can be filtered by entering a portion of the desired name. Additionally, the following commands can be entered into the text field:
 

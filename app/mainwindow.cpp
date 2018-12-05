@@ -25,7 +25,7 @@
 QHash<HWND, QString> gSavedWins;
 
 /// The application version string.
-QString gVerStr("0.5.1");
+QString gVerStr("0.5.2");
 
 /*=============================================================*/
 /* SECTION: Local Prototypes                                   */
@@ -158,21 +158,26 @@ void MainWindow::onTextChanged(const QString &text) {
     QString ptrn = "";
 
     QString ctxt = ui->cmdText->text();
-    if (ctxt == " ")
-    {
-        ui->cmdText->clear();
-        moveSel(SELMOVE_EXE);
-        return;
+    if (ctxt.right(1) == " ") {
+        if (ctxt == " ") {
+            ui->cmdText->clear();
+            moveSel(SELMOVE_EXE);
+            return;
+        } else if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
+            ui->cmdText->setText(text.trimmed());
+            moveSel(SELMOVE_EXE);
+            return;
+        }
     }
 
     format_cmds(cmds, text.toStdString());
-    if("" != cmds["number"]) {
+    if ("" != cmds["number"]) {
         proxy->setFilterKeyColumn(0);
         ptrn = QString::fromStdString(cmds["number"]);
-    } else if("" != cmds["executable"]) {
+    } else if ("" != cmds["executable"]) {
         proxy->setFilterKeyColumn(2);
         ptrn = QString::fromStdString(cmds["executable"]);
-    } else if(cmds.find("get") != cmds.end()) {
+    } else if (cmds.find("get") != cmds.end()) {
         proxy->setFilterKeyColumn(3);
         if("" != cmds["get"]) {
             ptrn = QString::fromStdString(cmds["get"]);

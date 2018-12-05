@@ -1,15 +1,19 @@
 = QuickWin Changelog
 
+== quickwin-0.5.2 (2018-12-04)
+=== Added
+  - Minor change to `CTRL+SPACE` shortcut to make it work even if there is command text already entered.
+
 == quickwin-0.5.1 (2018-12-01)
 === Highlights
   - Updated CHANGELOG format.
 
 === Added
-  - Added `CTRL-SPACE` and `SPACE` shortcut to jump between windows of same executable.
+  - Added `CTRL+SPACE` and `SPACE` shortcut to jump between windows of same executable.
 
 == quickwin-0.5.0 (2017-08-26)
 === Highlights
-  - Added `CTRL-E` shortcut to jump between windows of same executable.
+  - Added `CTRL+E` shortcut to jump between windows of same executable.
 
 == quickwin-0.4.0 (2017-05-28)
 === Highlights
