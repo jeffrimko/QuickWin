@@ -307,8 +307,12 @@ uint MainWindow::getSelWinNum(void) {
 
 void MainWindow::filterExe() {
     int row = ui->winView->currentIndex().row();
-    QString exec = proxy->data(proxy->index(row,2)).toString();
-    ui->cmdText->setText(";executable " + exec);
+    QString exec = ";executable " + proxy->data(proxy->index(row,2)).toString();
+    if (ui->cmdText->text() == exec) {
+        ui->cmdText->setText("");
+    } else {
+        ui->cmdText->setText(exec);
+    }
 }
 
 void MainWindow::onTextEnter()
