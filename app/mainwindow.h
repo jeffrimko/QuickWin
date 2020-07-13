@@ -76,6 +76,7 @@ private:
     void moveSel(SelMove mv);
     uint getSelWinNum(void);
     void checkSavedWins(void);
+    void filterExe(void);
 
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;

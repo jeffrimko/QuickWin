@@ -203,6 +203,7 @@ MainWindow::~MainWindow()
 void MainWindow::keyPressEvent(QKeyEvent *event) {
     bool hide_win = (event->key() == Qt::Key_Escape);
     bool quit_app = false;
+    bool filter_exe = false;
 
     SelMove mv = SELMOVE_NO;
     if(event->modifiers() && Qt::ControlModifier) {
@@ -213,6 +214,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             case Qt::Key_J: mv = SELMOVE_DWN; break;
             case Qt::Key_M: mv = SELMOVE_MID; break;
             case Qt::Key_E: mv = SELMOVE_EXE; break;
+            case Qt::Key_F: filter_exe = true; break;
             case Qt::Key_S: onWitemActivate(ui->winView->currentIndex());
             case Qt::Key_C: hide_win = true; break;
 #ifndef QT_NO_DEBUG
@@ -227,6 +229,11 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             case Qt::Key_Down: mv = SELMOVE_DWN; break;
         }
     }
+
+    if (filter_exe) {
+        filterExe();
+    }
+
     moveSel(mv);
 
     if(hide_win) {
@@ -296,6 +303,12 @@ uint MainWindow::getSelWinNum(void) {
     uint row = ui->winView->currentIndex().row();
     uint num = proxy->data(proxy->index(row, 0)).toInt() - 1;
     return(num);
+}
+
+void MainWindow::filterExe() {
+    int row = ui->winView->currentIndex().row();
+    QString exec = proxy->data(proxy->index(row,2)).toString();
+    ui->cmdText->setText(";executable " + exec);
 }
 
 void MainWindow::onTextEnter()
