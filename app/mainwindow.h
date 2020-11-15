@@ -82,6 +82,7 @@ private:
     QMenu *trayIconMenu;
     QAction *aboutAction;
     QAction *quitAction;
+    int sortColumn = 0;
 };
 
 #endif  // #ifndef include guard

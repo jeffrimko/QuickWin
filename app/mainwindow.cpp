@@ -208,6 +208,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
     SelMove mv = SELMOVE_NO;
     if(event->modifiers() && Qt::ControlModifier) {
         switch(event->key()) {
+            case Qt::Key_S: onWitemActivate(ui->winView->currentIndex());
             case Qt::Key_H: mv = SELMOVE_TOP; break;
             case Qt::Key_L: mv = SELMOVE_BTM; break;
             case Qt::Key_K: mv = SELMOVE_UP; break;
@@ -215,8 +216,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             case Qt::Key_M: mv = SELMOVE_MID; break;
             case Qt::Key_E: mv = SELMOVE_EXE; break;
             case Qt::Key_F: filter_exe = true; break;
-            case Qt::Key_S: onWitemActivate(ui->winView->currentIndex());
             case Qt::Key_C: hide_win = true; break;
+            case Qt::Key_O: sortColumn++; break;
 #ifndef QT_NO_DEBUG
             case Qt::Key_X: quit_app = true; break;
 #endif
@@ -229,6 +230,11 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             case Qt::Key_Down: mv = SELMOVE_DWN; break;
         }
     }
+
+    if (sortColumn > 3) {
+        sortColumn = 0;
+    }
+    ui->winView->sortByColumn(sortColumn, Qt::AscendingOrder);
 
     if (filter_exe) {
         filterExe();
@@ -315,8 +321,7 @@ void MainWindow::filterExe() {
     }
 }
 
-void MainWindow::onTextEnter()
-{
+void MainWindow::onTextEnter() {
     bool stay = false;
     cmds_t cmds;
     QString text = ui->cmdText->text();
@@ -382,6 +387,7 @@ void MainWindow::showMain(void) {
     activateWindow(); // for Windows
     ui->cmdText->clear();
     ui->cmdText->setFocus();
+    ui->winView->sortByColumn(sortColumn, Qt::AscendingOrder);
 }
 
 // Callback for `EnumWindows` that lists out all window names.
