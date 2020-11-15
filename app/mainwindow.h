@@ -83,6 +83,7 @@ private:
     QAction *aboutAction;
     QAction *quitAction;
     int sortColumn = 0;
+    bool sortAscending = true;
 };
 
 #endif  // #ifndef include guard

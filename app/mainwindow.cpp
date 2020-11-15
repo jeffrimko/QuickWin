@@ -218,6 +218,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             case Qt::Key_F: filter_exe = true; break;
             case Qt::Key_C: hide_win = true; break;
             case Qt::Key_O: sortColumn++; break;
+            case Qt::Key_I: sortAscending = !sortAscending; break;
 #ifndef QT_NO_DEBUG
             case Qt::Key_X: quit_app = true; break;
 #endif
@@ -234,7 +235,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
     if (sortColumn > 3) {
         sortColumn = 0;
     }
-    ui->winView->sortByColumn(sortColumn, Qt::AscendingOrder);
+    ui->winView->sortByColumn(sortColumn, sortAscending ? Qt::AscendingOrder : Qt::DescendingOrder);
 
     if (filter_exe) {
         filterExe();
@@ -387,7 +388,7 @@ void MainWindow::showMain(void) {
     activateWindow(); // for Windows
     ui->cmdText->clear();
     ui->cmdText->setFocus();
-    ui->winView->sortByColumn(sortColumn, Qt::AscendingOrder);
+    ui->winView->sortByColumn(sortColumn, sortAscending ? Qt::AscendingOrder : Qt::DescendingOrder);
 }
 
 // Callback for `EnumWindows` that lists out all window names.
