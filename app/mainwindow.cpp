@@ -127,6 +127,8 @@ void MainWindow::updateWinList(bool clear_note) {
         model->setData(model->index(i, 3), gSavedWins[witems[i].handle]);
     }
     ui->winView->setCurrentIndex(proxy->index(0,0));
+    ui->winView->sortByColumn(sortColumn, sortAscending ? Qt::AscendingOrder : Qt::DescendingOrder);
+    ui->winView->scrollTo(ui->winView->currentIndex());
     if(clear_note) {
         ui->noteText->clear();
         ui->noteText->append("QuickWin " + gVerStr + " found " + QString::number(witems.size()) + " windows.");
