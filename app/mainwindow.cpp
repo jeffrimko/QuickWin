@@ -119,9 +119,12 @@ void MainWindow::updateWinList(bool clear_note) {
     model->removeRows(0, model->rowCount());
     witems.clear();
     EnumWindows(EnumWindowsProc, (LPARAM)this);
+    QString windows = QString::number(witems.size());
+    int digits = windows.size();
+
     for(int i = 0; i < witems.size(); i++) {
         model->insertRow(i);
-        model->setData(model->index(i, 0), QString::number(witems[i].num));
+        model->setData(model->index(i, 0), QString::number(witems[i].num).rightJustified(digits, '0'));
         model->setData(model->index(i, 1), witems[i].title);
         model->setData(model->index(i, 2), witems[i].exec);
         model->setData(model->index(i, 3), gSavedWins[witems[i].handle]);
@@ -131,7 +134,7 @@ void MainWindow::updateWinList(bool clear_note) {
     ui->winView->scrollTo(ui->winView->currentIndex());
     if(clear_note) {
         ui->noteText->clear();
-        ui->noteText->append("QuickWin " + gVerStr + " found " + QString::number(witems.size()) + " windows.");
+        ui->noteText->append("QuickWin " + gVerStr + " found " + windows + " windows.");
     }
 }
 
@@ -196,6 +199,7 @@ void MainWindow::onTextChanged(const QString &text) {
     }
 
     ui->winView->sortByColumn(sortColumn, sortAscending ? Qt::AscendingOrder : Qt::DescendingOrder);
+    ui->winView->scrollTo(ui->winView->currentIndex());
     prev_ptrn = ptrn;
 }
 
@@ -240,6 +244,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         sortColumn = 0;
     }
     ui->winView->sortByColumn(sortColumn, sortAscending ? Qt::AscendingOrder : Qt::DescendingOrder);
+    ui->winView->scrollTo(ui->winView->currentIndex());
 
     if (filter_exe) {
         filterExe();
@@ -393,6 +398,7 @@ void MainWindow::showMain(void) {
     ui->cmdText->clear();
     ui->cmdText->setFocus();
     ui->winView->sortByColumn(sortColumn, sortAscending ? Qt::AscendingOrder : Qt::DescendingOrder);
+    ui->winView->scrollTo(ui->winView->currentIndex());
 }
 
 // Callback for `EnumWindows` that lists out all window names.
