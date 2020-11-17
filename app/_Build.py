@@ -22,7 +22,7 @@ BTYPE = ("release" if op.exists("release\quickwin.exe") else
         "debug" if op.exists("debug\quickwin.exe") else
         None)
 
-CONFIG = yaml.load(open("build.yaml").read())
+CONFIG = yaml.load(open("build.yaml").read(), Loader=yaml.FullLoader)
 
 ##==============================================================#
 ## SECTION: Function Definitions                                #
@@ -77,17 +77,34 @@ def run():
         qprompt.alert("[WARNING] Build app first!")
         return
     with fs.Cwd(BTYPE):
-        kill()
+        if is_running(verbose=False):
+            kill()
         sh.call("start quickwin.exe")
+        if not is_running():
+            qprompt.alert("Could not start QuickWin!")
 
-@qprompt.status("Killing running QuickWin...")
 @menu
 def kill():
+    qprompt.alert("Killing QuickWin...")
     sh.silent("taskkill /f /im quickwin.exe")
+    if is_running():
+        qprompt.warn("Could not kill QuickWin!")
+
+@menu
+def is_running(verbose=True):
+    out = sh.strout('tasklist /nh /fi "imagename eq quickwin.exe"')
+    running = not out.startswith("INFO: No tasks are running")
+    if verbose:
+        if running:
+            qprompt.alert("QuickWin is running.")
+        else:
+            qprompt.alert("QuickWin is not running.")
+    return running
 
 ##==============================================================#
 ## SECTION: Main Body                                           #
 ##==============================================================#
 
 if __name__ == '__main__':
+    # print(is_running())
     main(default="b")
