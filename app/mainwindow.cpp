@@ -192,6 +192,8 @@ void MainWindow::onTextChanged(const QString &text) {
         proxy->setFilterRegExp(QRegExp(ptrn, Qt::CaseInsensitive, QRegExp::Wildcard));
         ui->winView->setCurrentIndex(proxy->index(0,0));
     }
+
+    ui->winView->sortByColumn(sortColumn, sortAscending ? Qt::AscendingOrder : Qt::DescendingOrder);
     prev_ptrn = ptrn;
 }
 

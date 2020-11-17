@@ -23,7 +23,7 @@ call:ChkDep^
     "Qt"^
     "C++ Application Framework"^
     "http://www.qt.io/"^
-    "4.8.6"^
+    "4.8.7"^
     qmake -v
 call:ChkDep^
     "Python"^
