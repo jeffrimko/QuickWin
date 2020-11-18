@@ -426,6 +426,7 @@ BOOL CALLBACK EnumWindowsProc(HWND hWnd, LPARAM lParam) {
         if(GetProcessImageFileName(handle, (LPWSTR)buff, sizeof(buff))) {
             witem.exec = QString::fromWCharArray((const LPWSTR)buff);
             witem.exec = witem.exec.mid(witem.exec.lastIndexOf("\\") + 1);
+            witem.exec = witem.exec.toLower();
         } else {
             witem.exec = QString("NA");
         }
