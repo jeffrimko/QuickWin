@@ -4,7 +4,7 @@
 This project provides a Windows application that allows quick keyboard-based switching between open windows as well as the ability to bookmark frequently used windows for quick return. QuickWin is meant to supplement standard alt-tabbing while providing additional window movement control for those comfortable navigating with a keyboard.
 
 == Status
-The status of this project is **deprecated**. This project will likely no longer be updated as it is superseded by https://github.com/jeffrimko/PyQuickWin[PyQuickWin].
+The status of this project is **inactive**. This project is suitable for use but no new releases are planned. This project is superseded by https://github.com/jeffrimko/PyQuickWin[PyQuickWin].
 
 The release changelog is available link:CHANGELOG.adoc[here].
 
